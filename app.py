@@ -66,19 +66,18 @@ def payment_pix_page(payment_id):
     
     host_url = request.host_url
     
-    if not payment.paid:
-        return render_template("payment.html", 
-                            payment_id=payment.id, 
-                            value=payment.value, 
-                            host=host_url, 
-                            qr_code=payment.qr_code
-                            )
-    else:
+    if payment.paid:
         return render_template("confirmed_payment.html", 
                             payment_id=payment.id, 
                             value=payment.value, 
-                            )
+                            )            
     
+    return render_template("payment.html",
+                        payment_id=payment.id, 
+                        value=payment.value, 
+                        host=host_url, 
+                        qr_code=payment.qr_code
+                        )
 
 @socketio.on("connect")
 def handle_connect():
